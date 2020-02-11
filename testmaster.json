@@ -673,7 +673,7 @@
                     },
                     "omsagent": {
                         "enabled": true
-                        "log_analytics_workspace_id" = "[variables('loganalyticsworkspace_id')]",
+                        "log_analytics_workspace_id": "[variables('loganalyticsworkspace_id')]",
                     }
                 },
                 "agentPoolProfiles": [
