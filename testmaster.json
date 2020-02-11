@@ -383,6 +383,7 @@
      }
     },
     "variables": {
+        "loganalyticsworkspace_id": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaceName'))]",
         "vnetName": "scop1-vnet",
         "applicationGatewayName": "scop1-appgateway",
         "identityName": "scop1-appgwContrIdentity",
@@ -671,7 +672,8 @@
                         "enabled": false
                     },
                     "omsagent": {
-                        "enabled": false
+                        "enabled": true
+                        "log_analytics_workspace_id" = "[variables('loganalyticsworkspace_id')]",
                     }
                 },
                 "agentPoolProfiles": [
