@@ -384,7 +384,7 @@
     },
     "variables": {
         "workspaceName": "scop1-workspace",
-        "loganalyticsworkspace_id": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaceName'))]",
+        "loganalyticsworkspace_id": "[resourceId('Microsoft.ContainerService/managedClusters', variables('workspaceName'))]",
         "vnetName": "scop1-vnet",
         "applicationGatewayName": "scop1-appgateway",
         "identityName": "scop1-appgwContrIdentity",
