@@ -325,7 +325,62 @@
             "metadata": {
                 "description": "The sku of the Application Gateway. Default: WAF_v2 (Detection mode). In order to further customize WAF, use azure portal or cli."
             }
-        }
+        },
+        "workspaceName": {
+            "defaultValue": "scop1-workspace",
+            "type": "String",
+            "metadata": {
+            "description": "Specifies the name of the workspace."
+            }
+        },
+        "pricingTier": {
+            "type": "string",
+            "allowedValues": [
+             "pergb2018",
+             "Free",
+             "Standalone",
+             "PerNode",
+             "Standard",
+             "Premium"
+              ],
+            "defaultValue": "Free",
+            "metadata": {
+                "description": "Pricing tier: PerGB2018 or legacy tiers (Free, Standalone, PerNode, Standard or Premium) which are not available to all customers."
+             }
+         },
+         "location": {
+            "type": "String",
+            "allowedValues": [
+            "australiacentral", 
+            "australiaeast", 
+            "australiasoutheast", 
+            "brazilsouth",
+            "canadacentral", 
+            "centralindia", 
+            "centralus", 
+            "eastasia", 
+            "eastus", 
+            "eastus2", 
+            "francecentral", 
+            "japaneast", 
+            "koreacentral", 
+            "northcentralus", 
+            "northeurope", 
+            "southafricanorth", 
+            "southcentralus", 
+            "southeastasia", 
+            "uksouth", 
+            "ukwest", 
+            "westcentralus", 
+            "westeurope", 
+            "westus", 
+            "westus2" 
+            ],
+            "defaultValue": "eastus2",
+            "metadata": {
+            "description": "Specifies the location in which to create the workspace."
+         }
+     }
     },
     "variables": {
         "vnetName": "scop1-vnet",
@@ -352,6 +407,24 @@
         }
     },
     "resources": [
+        {
+        "type": "Microsoft.OperationalInsights/workspaces",
+        "name": "[parameters('workspaceName')]",
+        "apiVersion": "2017-03-15-preview",
+        "location": "[parameters('location')]",
+        "properties": {
+            "sku": { 
+                "name": "CapacityReservation",
+                "capacityReservationLevel": 100
+            },
+            "retentionInDays": 120,
+            "features": {
+                "searchVersion": 1,
+                "legacy": 0,
+                "enableLogAccessUsingOnlyResourcePermissions": true
+            }
+        }
+      }
         {
             "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
             "name": "[variables('identityName')]",
@@ -598,7 +671,7 @@
                         "enabled": false
                     },
                     "omsagent": {
-                        "enabled": true
+                        "enabled": false
                     }
                 },
                 "agentPoolProfiles": [
