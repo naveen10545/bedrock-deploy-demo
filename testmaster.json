@@ -424,7 +424,7 @@
                 "enableLogAccessUsingOnlyResourcePermissions": true
             }
         }
-      }
+      },
         {
             "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
             "name": "[variables('identityName')]",
