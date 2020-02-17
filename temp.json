@@ -328,13 +328,13 @@
         }
     },
     "variables": {
-        "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables($var4))]",
-        "kubernetesSubnetId": "[concat(variables('vnetID'),'/subnets/', variables($var8))]",
-        "applicationGatewaySubnetId": "[concat(variables('vnetID'),'/subnets/', variables($var9))]",
-        "applicationGatewayPublicIpId": "[resourceId('Microsoft.Network/publicIPAddresses',variables($var7))]",
-        "applicationGatewayId": "[resourceId('Microsoft.Network/applicationGateways', variables($var5))]",
-        "identityId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables($var6))]",
-        "aksClusterId": "[resourceId('Microsoft.ContainerService/managedClusters', variables($var10))]",
+        "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables(var4))]",
+        "kubernetesSubnetId": "[concat(variables('vnetID'),'/subnets/', variables(var8))]",
+        "applicationGatewaySubnetId": "[concat(variables('vnetID'),'/subnets/', variables(var9))]",
+        "applicationGatewayPublicIpId": "[resourceId('Microsoft.Network/publicIPAddresses',variables(var7))]",
+        "applicationGatewayId": "[resourceId('Microsoft.Network/applicationGateways', variables(var5))]",
+        "identityId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables(var6))]",
+        "aksClusterId": "[resourceId('Microsoft.ContainerService/managedClusters', variables(var10))]",
         "networkContributorRole": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
         "contributorRole": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
         "managedIdentityOperatorRole": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'f1a07417-d97a-45cb-824c-7a7467783830')]",
@@ -347,13 +347,13 @@
     "resources": [
         {
             "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-            "name": "[variables($var6)]",
+            "name": "[variables(var6)]",
             "apiVersion": "2015-08-31-PREVIEW",
             "location": "[resourceGroup().location]"
         },
         {
             "type": "Microsoft.Network/virtualNetworks",
-            "name": "[variables($var4)]",
+            "name": "[variables(var4)]",
             "apiVersion": "2018-08-01",
             "location": "[resourceGroup().location]",
             "properties": {
@@ -364,13 +364,13 @@
                 },
                 "subnets": [
                     {
-                        "name": "[variables($var8)]",
+                        "name": "[variables(var8)]",
                         "properties": {
                             "addressPrefix": "[parameters('aksSubnetAddressPrefix')]"
                         }
                     },
                     {
-                        "name": "[variables($var9)]",
+                        "name": "[variables(var9)]",
                         "properties": {
                             "addressPrefix": "[parameters('applicationGatewaySubnetAddressPrefix')]"
                         }
@@ -380,7 +380,7 @@
         },
         {
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[variables($var7)]",
+            "name": "[variables(var7)]",
             "apiVersion": "2018-08-01",
             "location": "[resourceGroup().location]",
             "sku": {
@@ -392,7 +392,7 @@
         },
         {
             "type": "Microsoft.Network/applicationGateways",
-            "name": "[variables($var5)]",
+            "name": "[variables(var5)]",
             "apiVersion": "2018-08-01",
             "location": "[resourceGroup().location]",
             "tags": {
@@ -488,8 +488,8 @@
                 "webApplicationFirewallConfiguration": "[if(equals(parameters('applicationGatewaySku'), 'WAF_v2'), variables('webApplicationFirewallConfiguration'), json('null'))]"
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', variables($var4))]",
-                "[concat('Microsoft.Network/publicIPAddresses/', variables($var7))]"
+                "[concat('Microsoft.Network/virtualNetworks/', variables(var4))]",
+                "[concat('Microsoft.Network/publicIPAddresses/', variables(var7))]"
             ]
         },
         {
@@ -509,7 +509,7 @@
                         {
                             "type": "Microsoft.Network/virtualNetworks/subnets/providers/roleAssignments",
                             "apiVersion": "2017-05-01",
-                            "name": "[concat(variables($var4), '/', variables($var8),'/Microsoft.Authorization/', guid(resourceGroup().id, 'aksvnetaccess'))]",
+                            "name": "[concat(variables(var4), '/', variables(var8),'/Microsoft.Authorization/', guid(resourceGroup().id, 'aksvnetaccess'))]",
                             "properties": {
                               "roleDefinitionId": "[variables('networkContributorRole')]",
                               "principalId": "[parameters('aksServicePrincipalObjectId')]",
@@ -519,7 +519,7 @@
                         {
                             "type": "Microsoft.ManagedIdentity/userAssignedIdentities/providers/roleAssignments",
                             "apiVersion": "2017-05-01",
-                            "name": "[concat(variables($var6), '/Microsoft.Authorization/', guid(resourceGroup().id, 'aksidentityaccess'))]",
+                            "name": "[concat(variables(var6), '/Microsoft.Authorization/', guid(resourceGroup().id, 'aksidentityaccess'))]",
                             "properties": {
                                 "roleDefinitionId": "[variables('managedIdentityOperatorRole')]",
                                 "principalId": "[parameters('aksServicePrincipalObjectId')]",
@@ -531,8 +531,8 @@
                 }
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', variables($var4))]",
-                "[concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables($var6))]"
+                "[concat('Microsoft.Network/virtualNetworks/', variables(var4))]",
+                "[concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables(var6))]"
             ]
         },
         {
@@ -552,7 +552,7 @@
                         {
                             "type": "Microsoft.Network/applicationgateways/providers/roleAssignments",
                             "apiVersion": "2017-05-01",
-                            "name": "[concat(variables($var5), '/Microsoft.Authorization/', guid(resourceGroup().id, 'identityappgwaccess'))]",
+                            "name": "[concat(variables(var5), '/Microsoft.Authorization/', guid(resourceGroup().id, 'identityappgwaccess'))]",
                             "properties": {
                                 "roleDefinitionId": "[variables('contributorRole')]",
                                 "principalId": "[reference(variables('identityId'), '2015-08-31-PREVIEW').principalId]",
@@ -573,13 +573,13 @@
                 }
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/applicationgateways/', variables($var5))]",
-                "[concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables($var6))]"
+                "[concat('Microsoft.Network/applicationgateways/', variables(var5))]",
+                "[concat('Microsoft.ManagedIdentity/userAssignedIdentities/', variables(var6))]"
             ]
         },
         {
             "type": "Microsoft.ContainerService/managedClusters",
-            "name": "[variables($var10)]",
+            "name": "[variables(var10)]",
             "apiVersion": "2018-03-31",
             "location": "[resourceGroup().location]",
             "properties": {
@@ -618,7 +618,7 @@
                 }
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', variables($var4))]",
+                "[concat('Microsoft.Network/virtualNetworks/', variables(var4))]",
                 "[concat('Microsoft.Resources/deployments/', 'RoleAssignmentDeploymentForKubenetesSp')]"
             ]
         }
@@ -634,7 +634,7 @@
         },
         "applicationGatewayName": {
             "type": "string",
-            "value": "[variables($var5)]"
+            "value": "[variables(var5)]"
         },
         "identityResourceId": {
             "type": "string",
@@ -650,7 +650,7 @@
         },
         "aksClusterName": {
             "type": "string",
-            "value": "[variables($var10)]"
+            "value": "[variables(var10)]"
         }
     }
 }
