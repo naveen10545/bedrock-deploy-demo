@@ -328,14 +328,6 @@
         }
     },
     "variables": {
-        #"resgpguid": "[substring(replace(guid(resourceGroup().id), '-', ''), 0, 4)]",
-        #"vnetName": $var4,
-        #"applicationGatewayName": $var5,
-        #"identityName": $var6,
-        #"applicationGatewayPublicIpName": $var7,
-        #"kubernetesSubnetName": $var8,
-        #"applicationGatewaySubnetName": $var9,
-        #"aksClusterName": $var10,
         "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables($var4))]",
         "kubernetesSubnetId": "[concat(variables('vnetID'),'/subnets/', variables($var8))]",
         "applicationGatewaySubnetId": "[concat(variables('vnetID'),'/subnets/', variables($var9))]",
